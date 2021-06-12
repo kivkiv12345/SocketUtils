@@ -66,7 +66,7 @@ def main():
             data, addr = sock.recvfrom(args.buffer_size)
             # TODO Kevin: Add the ability to send the data to a remote destination.
             with open(args.destination, mode='a+') as file:
-                file.write(data.decode(args.decode) if args.decode else data)
+                file.write((data.decode(args.decode) if args.decode else data) + '\n')
 
 
 if __name__ == '__main__':
