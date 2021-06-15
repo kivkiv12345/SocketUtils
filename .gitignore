@@ -149,4 +149,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-test.txt
+# Ignore all text files
+*.txt
