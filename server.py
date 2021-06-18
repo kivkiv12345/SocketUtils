@@ -84,11 +84,13 @@ def main():
                     while True:
                         data = conn.recv(args.buffer_size)
                         if not data: break
+                        print(data)
                         _write_to_file(data)
 
             elif args.connect_mode is _UDP:
                 data, addr = sock.recvfrom(args.buffer_size)
                 # TODO Kevin: Add the ability to send the data to a remote destination.
+                print(data)
                 _write_to_file(data)
 
 

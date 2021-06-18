@@ -22,6 +22,6 @@ CONNECTION_PROTOCOL_DEFAULT: _MODE_TYPEHINT     = _TCP
 
 def _get_connection_mode(value: str) -> _MODE_TYPEHINT:
     """ Checks that a valid connection protocol is specified, and returns the corresponding socket type """
-    if (_mode := (_valid_modes := {'udp': _UDP, 'tcp': _UDP}).get(value.lower(), ...)) is ...:
+    if (_mode := (_valid_modes := {'udp': _UDP, 'tcp': _TCP}).get(value.lower(), ...)) is ...:
         raise ArgumentTypeError(f"'{value}' is not a valid connection mode. Choices are: {tuple(_valid_modes.keys())}.")
     return _mode
