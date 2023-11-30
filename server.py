@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 This module pipes contents to and from a UDP socket connections.
 Ex: logging received data to a text file.
@@ -26,8 +27,8 @@ TIMEOUT_DEFAULT:     Union[float, int, None]    = 60
 # Specify the arguments that the program may receive
 parser.add_argument('-p', '--port', type=int, metavar='', default=PORT_DEFAULT,
                     help=f"Which port to listen on. Defaults to {PORT_DEFAULT}")
-parser.add_argument('-d', '--destination', type=str, metavar='', required=True,
-                    help='Specified file to pipe received data to')
+parser.add_argument('-d', '--destination', type=str, metavar='', default=None,
+                    help='Specified file to pipe received data to, default STDOUT')
 parser.add_argument('-c', '--connect_mode', type=_get_connection_mode, metavar='', default=CONNECTION_PROTOCOL_DEFAULT,
                     help="Whether to use TCP or UDP when sending and receiving packages. Defaults to 'tcp'. Accepts either 'udp' or 'tcp'")
 parser.add_argument('-f', '--create_file', default=CREATE_FILE_DEFAULT, action='store_true',
@@ -57,6 +58,10 @@ args = parser.parse_args()
 
 
 def _write_to_file(data):
+
+    if args.destination is None:
+        return
+
     with open(args.destination, mode='a+') as file:
         file.write((data.decode(args.decode) if args.decode else data) + '\n')
 
@@ -64,7 +69,7 @@ def _write_to_file(data):
 def main():
 
     # Check that the file exists (if need be), before we wait for a response.
-    if not args.create_file and not path.isfile(args.destination):
+    if args.destination is not None and not args.create_file and not path.isfile(args.destination):
         raise SystemExit(f"Specified destination <'{args.destination}'> does not exist.")
 
     with socket.socket(socket.AF_INET, args.connect_mode) as sock:  # socket.AF_INET = ipv4 | socket.SOCK_DGRAM = UDP
